@@ -27,7 +27,7 @@ public class Brand implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_BRAND")
     private Long id;
-    @Column(name = "NAME", length = 60, unique = true)
+    @Column(name = "NAME", length = 60)
     private String name;
 
     public Brand(BrandRequestResource data) {

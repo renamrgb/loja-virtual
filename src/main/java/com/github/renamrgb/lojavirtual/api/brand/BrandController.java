@@ -5,8 +5,6 @@ import com.github.renamrgb.lojavirtual.domain.brand.request.BrandRequestResource
 import com.github.renamrgb.lojavirtual.domain.brand.response.BrandResponseRerource;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -36,8 +36,8 @@ public class BrandController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public Page<BrandResponseRerource> getAll(Pageable page) {
-        return brandService.getAll(page);
+    public List<BrandResponseRerource> getAll() {
+        return brandService.getAll();
     }
 
     @GetMapping("{id}")

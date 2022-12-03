@@ -1,8 +1,8 @@
 package com.github.renamrgb.lojavirtual.application.services.brand;
 
+import com.github.renamrgb.lojavirtual.application.MessageHandler;
 import com.github.renamrgb.lojavirtual.application.services.exceptions.ResourceNotFoundException;
 import com.github.renamrgb.lojavirtual.domain.brand.Brand;
-import com.github.renamrgb.lojavirtual.application.MessageHandler;
 import com.github.renamrgb.lojavirtual.domain.brand.request.BrandRequestResource;
 import com.github.renamrgb.lojavirtual.domain.brand.response.BrandResponseRerource;
 import com.github.renamrgb.lojavirtual.infra.repositories.brand.BrandRepository;
@@ -10,12 +10,12 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -38,9 +38,12 @@ public class BrandService {
     }
 
     @Transactional(readOnly = true)
-    public Page<BrandResponseRerource> getAll(Pageable page) {
-        Page<Brand> all = brandRepository.findAll(page);
-        return all.map(BrandResponseRerource::new);
+    public List<BrandResponseRerource> getAll() {
+        List<Brand> all = brandRepository.findAll();
+        return all
+                .stream()
+                .map(BrandResponseRerource::new)
+                .collect(Collectors.toList());
     }
 
 
