@@ -1,0 +1,10 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: Loja-Virtual
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
