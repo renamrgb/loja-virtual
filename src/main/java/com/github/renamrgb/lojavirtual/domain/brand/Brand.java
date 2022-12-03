@@ -13,6 +13,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 
 @Getter
 @NoArgsConstructor
@@ -21,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "BRAND")
 @SequenceGenerator(name = "SEQ", sequenceName = "SEQ_BRAND", initialValue = 1, allocationSize = 20)
-public class Brand {
+public class Brand implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_BRAND")
     private Long id;
