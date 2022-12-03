@@ -1,10 +1,15 @@
 package com.github.renamrgb.lojavirtual.application.services.brand;
 
+import com.github.renamrgb.lojavirtual.application.services.exceptions.ResourceNotFoundException;
 import com.github.renamrgb.lojavirtual.domain.brand.Brand;
+import com.github.renamrgb.lojavirtual.application.MessageHandler;
 import com.github.renamrgb.lojavirtual.domain.brand.request.BrandRequestResource;
 import com.github.renamrgb.lojavirtual.domain.brand.response.BrandResponseRerource;
 import com.github.renamrgb.lojavirtual.infra.repositories.brand.BrandRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -12,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BrandService {
@@ -40,19 +46,25 @@ public class BrandService {
 
     @Transactional
     public BrandResponseRerource update(Long id, BrandRequestResource resource) {
-       try {
-           Brand brand = brandRepository.getReferenceById(id);
-           brand.update(resource);
-           return new BrandResponseRerource(brand);
-       } catch (Exception e) {
-           throw e;
-       }
+        try {
+            Brand brand = brandRepository.getReferenceById(id);
+            brand.update(resource);
+            return new BrandResponseRerource(brand);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException(String.format(MessageHandler.RESOURCE_NOT_FOUND.getMessage(), id));
+        } catch (Exception e) {
+            log.error("Erro não esperado {}", e);
+            throw e;
+        }
     }
 
     public void delete(Long id) {
         try {
             brandRepository.deleteById(id);
-        }catch (Exception e) {
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException(String.format(MessageHandler.RESOURCE_NOT_FOUND.getMessage(), id));
+        } catch (Exception e) {
+            log.error("Erro não esperado {}", e);
             throw e;
         }
     }
