@@ -2,6 +2,7 @@ package com.github.renamrgb.lojavirtual.api.exceptions;
 
 import com.github.renamrgb.lojavirtual.application.services.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -34,9 +35,15 @@ public class ControllerExceptionHandler {
         err.setMessage("Request informada esta fora das especificações.");
 
         for (FieldError f : e.getBindingResult().getFieldErrors()) {
-            err.addErro(f.getField(), f.getDefaultMessage());
+            String message = prepareFieldMessage(f.getDefaultMessage());
+            err.addErro(f.getField(), message);
         }
 
         return err;
+    }
+
+    private String prepareFieldMessage(String message) {
+        message = StringUtils.capitalize(message);
+        return message.concat(".");
     }
 }
