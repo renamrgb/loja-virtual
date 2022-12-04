@@ -2,7 +2,7 @@ package com.github.renamrgb.lojavirtual.api.brand;
 
 import com.github.renamrgb.lojavirtual.application.services.brand.BrandService;
 import com.github.renamrgb.lojavirtual.domain.brand.request.BrandRequestResource;
-import com.github.renamrgb.lojavirtual.domain.brand.response.BrandResponseRerource;
+import com.github.renamrgb.lojavirtual.domain.brand.response.BrandResponseResource;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,28 +29,28 @@ public class BrandController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public BrandResponseRerource save(@RequestBody @Valid BrandRequestResource resource) {
+    public BrandResponseResource save(@RequestBody @Valid BrandRequestResource resource) {
         return brandService.save(resource);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<BrandResponseRerource> getAll() {
+    public List<BrandResponseResource> getAll() {
         return brandService.getAll();
     }
 
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public BrandResponseRerource getById(@PathVariable Long id) {
+    public BrandResponseResource getById(@PathVariable Long id) {
         return brandService.getById(id);
     }
 
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public BrandResponseRerource update(@PathVariable Long id, @RequestBody BrandRequestResource resource) {
+    public BrandResponseResource update(@PathVariable Long id, @RequestBody BrandRequestResource resource) {
         return brandService.update(id, resource);
     }
 
