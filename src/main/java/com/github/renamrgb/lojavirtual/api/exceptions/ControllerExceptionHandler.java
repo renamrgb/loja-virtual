@@ -1,5 +1,6 @@
 package com.github.renamrgb.lojavirtual.api.exceptions;
 
+import com.github.renamrgb.lojavirtual.application.services.exceptions.DatabaseViolation;
 import com.github.renamrgb.lojavirtual.application.services.exceptions.InvalidePriceException;
 import com.github.renamrgb.lojavirtual.application.services.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -59,6 +60,16 @@ public class ControllerExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public StandardError invalidPrice(InvalidePriceException e) {
+        StandardError err = new StandardError();
+        err.setCode(BAD_REQUEST_CODE);
+        err.setMessage(e.getMessage());
+        return err;
+    }
+
+    @ExceptionHandler(DatabaseViolation.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public StandardError databaseViolation(DatabaseViolation e) {
         StandardError err = new StandardError();
         err.setCode(BAD_REQUEST_CODE);
         err.setMessage(e.getMessage());

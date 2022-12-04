@@ -1,6 +1,7 @@
 package com.github.renamrgb.lojavirtual.application.services.category;
 
 import com.github.renamrgb.lojavirtual.application.MessageHandler;
+import com.github.renamrgb.lojavirtual.application.services.exceptions.DatabaseViolation;
 import com.github.renamrgb.lojavirtual.application.services.exceptions.ResourceNotFoundException;
 import com.github.renamrgb.lojavirtual.domain.category.Category;
 import com.github.renamrgb.lojavirtual.domain.category.request.CategoryRequestResource;
@@ -9,6 +10,7 @@ import com.github.renamrgb.lojavirtual.infra.repositories.category.CategoryRepos
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,9 +69,8 @@ public class CategoryService {
             categoryRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException(String.format(MessageHandler.RESOURCE_NOT_FOUND.getMessage(), id));
-        } catch (Exception e) {
-            log.error("Erro não esperado {}", e);
-            throw e;
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseViolation(String.format(MessageHandler.DATABASE_VIOLATION_RELATION_ENTITY.getMessage(), "Category", id, "Product"));
         }
     }
 }
