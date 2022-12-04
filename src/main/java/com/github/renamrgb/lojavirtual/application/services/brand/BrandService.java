@@ -33,7 +33,8 @@ public class BrandService {
     @Transactional(readOnly = true)
     public BrandResponseResource getById(Long id) {
         Optional<Brand> optBrand = brandRepository.findById(id);
-        Brand brand = optBrand.orElseThrow();
+        Brand brand = optBrand
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(MessageHandler.RESOURCE_NOT_FOUND.getMessage(), id)));
         return new BrandResponseResource(brand);
     }
 

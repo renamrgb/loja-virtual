@@ -33,7 +33,8 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public CategoryResponseResource getById(Long id) {
         Optional<Category> optBrand = categoryRepository.findById(id);
-        Category category = optBrand.orElseThrow();
+        Category category = optBrand
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(MessageHandler.RESOURCE_NOT_FOUND.getMessage(), id)));
         return new CategoryResponseResource(category);
     }
 
