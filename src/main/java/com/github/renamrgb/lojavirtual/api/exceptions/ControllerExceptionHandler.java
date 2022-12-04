@@ -1,5 +1,6 @@
 package com.github.renamrgb.lojavirtual.api.exceptions;
 
+import com.github.renamrgb.lojavirtual.application.services.exceptions.InvalidePriceException;
 import com.github.renamrgb.lojavirtual.application.services.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
@@ -51,6 +52,16 @@ public class ControllerExceptionHandler {
         StandardError err = new StandardError();
         err.setCode(BAD_REQUEST_CODE);
         err.setMessage("Parâmetro informada não está no formato valido");
+        return err;
+    }
+
+    @ExceptionHandler(InvalidePriceException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public StandardError invalidPrice(InvalidePriceException e) {
+        StandardError err = new StandardError();
+        err.setCode(BAD_REQUEST_CODE);
+        err.setMessage(e.getMessage());
         return err;
     }
 
