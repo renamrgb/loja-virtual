@@ -9,12 +9,14 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
     private static final String NOT_FOUND_CODE = "404";
     private static final String UNPROCESSABLE_ENTITY_CODE = "422";
+    private static final String BAD_REQUEST_CODE = "400";
 
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseBody
@@ -39,6 +41,16 @@ public class ControllerExceptionHandler {
             err.addErro(f.getField(), message);
         }
 
+        return err;
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public StandardError invalidArgumentType() {
+        StandardError err = new StandardError();
+        err.setCode(BAD_REQUEST_CODE);
+        err.setMessage("Parâmetro informada não está no formato valido");
         return err;
     }
 
